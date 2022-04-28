@@ -10,4 +10,15 @@ const getDepartments = () => {
         });
 };
 
-module.exports = { getDepartments };
+const addDepartment = (departmentName) => {
+    const sql = `INSERT INTO department (name)
+    VALUES (?)`;
+    const params = [departmentName];
+    
+    return db.promise().query(sql, params)
+        .then(() => {
+            console.log('Added ' + departmentName + ' to the database');
+        });
+};
+
+module.exports = { getDepartments, addDepartment };

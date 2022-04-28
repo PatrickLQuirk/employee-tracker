@@ -15,7 +15,7 @@ const promptMainMenu = () => {
         type: 'list',
         name: 'mainMenu',
         message: 'What would you like to do?',
-        choices: ['View Departments', 'Add Department'],
+        choices: ['View Departments', 'Add Department', 'Exit Application'],
     }
 
     return inquirer.prompt(mainMenuQuestion)
@@ -25,9 +25,24 @@ const promptMainMenu = () => {
                     .then(promptMainMenu);
             }
             else if (mainMenuData.mainMenu === 'Add Department') {
-                return;
+                return promptAddDepartment()
+                    .then(promptMainMenu);
             }
             return;
+        });
+};
+
+const promptAddDepartment = () => {
+    const addDepartmentQuestion = {
+        type: 'input',
+        name: 'addDepartment',
+        message: 'What is the name of the department?'
+    };
+
+    return inquirer.prompt(addDepartmentQuestion)
+        .then(addDepartmentData => {
+            const departmentName = addDepartmentData.addDepartment;
+            return queries.addDepartment(departmentName);
         });
 };
 
