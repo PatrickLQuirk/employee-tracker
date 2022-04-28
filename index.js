@@ -2,7 +2,8 @@ const inquirer = require('inquirer');
 const db = require('./db/connection');
 
 // later change the way we require the queries
-const { getDepartments } = require('./queries/department-queries');
+// const { getDepartments } = require('./queries/department-queries');
+const queries = require('./utils/queries');
 
 db.connect(err => {
     if (err) throw err;
@@ -20,7 +21,7 @@ const promptMainMenu = () => {
     return inquirer.prompt(mainMenuQuestion)
         .then(mainMenuData => {
             if (mainMenuData.mainMenu === 'View Departments') {
-                return getDepartments()
+                return queries.getDepartments()
                     .then(promptMainMenu);
             }
             else if (mainMenuData.mainMenu === 'Add Department') {
