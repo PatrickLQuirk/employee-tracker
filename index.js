@@ -21,11 +21,11 @@ const promptMainMenu = () => {
     return inquirer.prompt(mainMenuQuestion)
         .then(mainMenuData => {
             if (mainMenuData.mainMenu === 'View Departments') {
-                return queries.getAllFromTable('department')
+                return queries.getDepartments()
                     .then(promptMainMenu);
             }
             else if (mainMenuData.mainMenu === 'View Roles') {
-                return queries.getAllFromTable('role')
+                return queries.getRoles('role')
                     .then(promptMainMenu);
             }
             else if (mainMenuData.mainMenu === 'Add Department') {

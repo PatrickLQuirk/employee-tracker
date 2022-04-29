@@ -1,9 +1,22 @@
 const cTable = require('console.table');
 const db = require('../db/connection');
 
-const getAllFromTable = (tableName) => {
-    const sql = `SELECT * FROM ${tableName}`;
+const getDepartments = () => {
+    const sql = `SELECT * FROM department`;
 
+    return db.promise().query(sql)
+        .then( ([rows, fields]) => {
+            console.table(rows);
+        });
+};
+
+const getRoles = () => {
+    const sql = `SELECT role.*, department.name 
+                AS department_name
+                FROM role
+                LEFT JOIN department
+                ON role.department_id = department.id`;
+    
     return db.promise().query(sql)
         .then( ([rows, fields]) => {
             console.table(rows);
@@ -21,4 +34,4 @@ const addDepartment = (departmentName) => {
         });
 };
 
-module.exports = { getAllFromTable, addDepartment };
+module.exports = { getDepartments, getRoles, addDepartment };
