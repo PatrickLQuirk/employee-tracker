@@ -21,7 +21,7 @@ const promptMainMenu = () => {
     return inquirer.prompt(mainMenuQuestion)
         .then(mainMenuData => {
             if (mainMenuData.mainMenu === 'View Departments') {
-                return queries.getDepartments()
+                return queries.getAllFromTable('department')
                     .then(promptMainMenu);
             }
             else if (mainMenuData.mainMenu === 'Add Department') {
