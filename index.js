@@ -15,13 +15,17 @@ const promptMainMenu = () => {
         type: 'list',
         name: 'mainMenu',
         message: 'What would you like to do?',
-        choices: ['View Departments', 'Add Department', 'Exit Application'],
+        choices: ['View Departments', 'View Roles', 'Add Department', 'Add Role', 'Exit Application'],
     }
 
     return inquirer.prompt(mainMenuQuestion)
         .then(mainMenuData => {
             if (mainMenuData.mainMenu === 'View Departments') {
                 return queries.getAllFromTable('department')
+                    .then(promptMainMenu);
+            }
+            else if (mainMenuData.mainMenu === 'View Roles') {
+                return queries.getAllFromTable('role')
                     .then(promptMainMenu);
             }
             else if (mainMenuData.mainMenu === 'Add Department') {
