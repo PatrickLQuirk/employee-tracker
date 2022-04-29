@@ -32,6 +32,10 @@ const promptMainMenu = () => {
                 return promptAddDepartment()
                     .then(promptMainMenu);
             }
+            else if (mainMenuData.mainMenu === 'Add Role') {
+                return promptAddRole()
+                    .then(promptMainMenu);
+            }
             return;
         });
 };
@@ -49,6 +53,31 @@ const promptAddDepartment = () => {
             return queries.addDepartment(departmentName);
         });
 };
+
+const promptAddRole = () => {
+    const addRoleQuestions = [
+        {
+            type: 'input',
+            name: 'title',
+            message: 'What is the name of the role?'
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'What is the salary of the role?'
+        },
+        {
+            type: 'input',
+            name: 'departmentName',
+            message: 'Which department does the role belong to?'
+        }
+    ];
+
+    return inquirer.prompt(addRoleQuestions)
+        .then(addRoleData => {
+            return queries.addRole(addRoleData);
+        });
+}
 
 promptMainMenu().then(() => {
     console.log('Thank you for using our application!');
