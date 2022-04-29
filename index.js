@@ -25,7 +25,7 @@ const promptMainMenu = () => {
                     .then(promptMainMenu);
             }
             else if (mainMenuData.mainMenu === 'View Roles') {
-                return queries.getRoles('role')
+                return queries.getRoles()
                     .then(promptMainMenu);
             }
             else if (mainMenuData.mainMenu === 'Add Department') {
