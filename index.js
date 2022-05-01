@@ -15,7 +15,7 @@ const promptMainMenu = () => {
         type: 'list',
         name: 'mainMenu',
         message: 'What would you like to do?',
-        choices: ['View Departments', 'View Roles', 'Add Department', 'Add Role', 'Exit Application'],
+        choices: ['View Departments', 'View Roles', 'View Employees', 'Add Department', 'Add Role', 'Add Employee', 'Exit Application'],
     }
 
     return inquirer.prompt(mainMenuQuestion)
@@ -26,6 +26,10 @@ const promptMainMenu = () => {
             }
             else if (mainMenuData.mainMenu === 'View Roles') {
                 return queries.getRoles()
+                    .then(promptMainMenu);
+            }
+            else if (mainMenuData.mainMenu === 'View Employees') {
+                return queries.getEmployees()
                     .then(promptMainMenu);
             }
             else if (mainMenuData.mainMenu === 'Add Department') {
