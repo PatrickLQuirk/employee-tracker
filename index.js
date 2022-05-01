@@ -50,6 +50,10 @@ const promptMainMenu = () => {
                 return promptAddRole()
                     .then(promptMainMenu);
             }
+            else if (mainMenuData.mainMenu === 'Add Employee') {
+                return promptAddEmployee()
+                    .then(promptMainMenu);
+            }
             return;
         });
 };
@@ -92,6 +96,36 @@ const promptAddRole = () => {
             return queries.addRole(addRoleData);
         });
 }
+
+const promptAddEmployee = () => {
+    const addEmployeeQuestions = [
+        {
+            type: 'input',
+            name: 'firstName',
+            message: "What is the employee's first name?"
+        },
+        {
+            type: 'input',
+            name: 'lastName',
+            message: "What is the employee's last name?"
+        },
+        {
+            type: 'input',
+            name: 'roleName',
+            message: "What is the employee's role?"
+        },
+        {
+            type: 'input',
+            name: 'managerName',
+            message: "Who is the employee's manager?"
+        }
+    ];
+
+    return inquirer.prompt(addEmployeeQuestions)
+        .then(addEmployeeData => {
+            return queries.addEmployee(addEmployeeData);
+        });
+};
 
 promptMainMenu().then(() => {
     console.log('Thank you for using our application!');

@@ -88,4 +88,57 @@ const addRole = (roleData) => {
         });
 };
 
-module.exports = { getDepartments, getRoles, getEmployees, addDepartment, addRole };
+const getRoleId = (roleTitle) => {
+    const sql = `SELECT role.id FROM role
+                WHERE role.title = ?`;
+    const params = [roleTitle];
+
+    return db.promise().query(sql, params)
+        .then( ([rows, fields]) => {
+            // add error handling for no role with that name
+            const roleId = rows[0].id;
+            return roleId;
+        })
+};
+
+const getManagerId = (managerName) => {
+    const sql = `SELECT employee.id FROM employee
+                WHERE CONCAT(employee.first_name, ' ', employee.last_name) = ?`;
+    const params = [managerName];
+
+    return db.promise().query(sql, params)
+        .then( ([rows, fields]) => {
+            // add error handling for no manager with that name?
+            const managerId = rows[0].id;
+            return managerId;
+        })
+        .catch(err => {
+            return;
+        })
+}
+
+const addEmployee = (employeeData) => {
+    return getRoleId(employeeData.roleName)
+    .then(roleId => {
+        return getManagerId(employeeData.managerName)
+            .then(managerId => {
+                // there is probably a better way to handle the differences in the queries when there is no managerId
+                if (managerId) {
+                    var sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id)
+                    VALUES (?, ?, ?, ?)`;
+                    var params = [employeeData.firstName, employeeData.lastName, roleId, managerId];
+                } else {
+                    var sql = `INSERT INTO employee (first_name, last_name, role_id)
+                    VALUES (?, ?, ?)`;
+                    var params = [employeeData.firstName, employeeData.lastName, roleId];
+                }
+
+                return db.promise().query(sql, params)
+                    .then(() => {
+                        console.log('Added ' + employeeData.firstName + ' ' + employeeData.lastName + ' to the database');
+                    });
+            });
+    });
+};
+
+module.exports = { getDepartments, getRoles, getEmployees, addDepartment, addRole, addEmployee };
