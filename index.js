@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const db = require('./db/connection');
+const cTable = require('console.table');
 
 // later change the way we require the queries
 // const { getDepartments } = require('./queries/department-queries');
@@ -22,14 +23,23 @@ const promptMainMenu = () => {
         .then(mainMenuData => {
             if (mainMenuData.mainMenu === 'View Departments') {
                 return queries.getDepartments()
+                    .then(([rows, fields]) => {
+                        console.table(rows);
+                    })
                     .then(promptMainMenu);
             }
             else if (mainMenuData.mainMenu === 'View Roles') {
                 return queries.getRoles()
+                    .then(([rows, fields]) => {
+                        console.table(rows);
+                    })
                     .then(promptMainMenu);
             }
             else if (mainMenuData.mainMenu === 'View Employees') {
                 return queries.getEmployees()
+                    .then(([rows, fields]) => {
+                        console.table(rows);
+                    })
                     .then(promptMainMenu);
             }
             else if (mainMenuData.mainMenu === 'Add Department') {
