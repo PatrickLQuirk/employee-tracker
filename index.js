@@ -12,14 +12,16 @@ db.connect(err => {
 
 const promptMainMenu = () => {
     // eventually need to add more options
-    const mainMenuQuestion = {
+    const mainMenuQuestions = [{
         type: 'list',
         name: 'mainMenu',
         message: 'What would you like to do?',
-        choices: ['View Departments', 'View Roles', 'View Employees', 'Add Department', 'Add Role', 'Add Employee', 'Exit Application'],
-    }
+        choices: ['View Departments', 'View Roles', 'View Employees', 
+        'Add Department', 'Add Role', 'Add Employee', 
+        'Update Employee Role', 'Exit Application']
+    }]
 
-    return inquirer.prompt(mainMenuQuestion)
+    return inquirer.prompt(mainMenuQuestions)
         .then(mainMenuData => {
             if (mainMenuData.mainMenu === 'View Departments') {
                 return queries.getDepartments()
@@ -52,6 +54,10 @@ const promptMainMenu = () => {
             }
             else if (mainMenuData.mainMenu === 'Add Employee') {
                 return promptAddEmployee()
+                    .then(promptMainMenu);
+            }
+            else if (mainMenuData.mainMenu === 'Update Employee Role'){
+                return promptUpdateRole()
                     .then(promptMainMenu);
             }
             return;
@@ -126,6 +132,29 @@ const promptAddEmployee = () => {
             return queries.addEmployee(addEmployeeData);
         });
 };
+
+const promptUpdateRole = () => {
+    return queries.getEmployeeNames()
+        .then(employeeNames => {
+            const updateRoleQuestions = [
+                {
+                    type: 'list',
+                    name: 'employeeName',
+                    message: "Which employee's role do you want to update?",
+                    choices: employeeNames
+                },
+                {
+                    type: 'input',
+                    name: 'newRole',
+                    message: 'What is their new role?'
+                }
+            ];
+            return inquirer.prompt(updateRoleQuestions)
+                .then(updateRoleData => {
+                    return queries.updateEmployeeRole(updateRoleData);
+                });
+        });
+}
 
 promptMainMenu().then(() => {
     console.log('Thank you for using our application!');

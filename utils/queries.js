@@ -141,4 +141,41 @@ const addEmployee = (employeeData) => {
     });
 };
 
-module.exports = { getDepartments, getRoles, getEmployees, addDepartment, addRole, addEmployee };
+const getEmployeeNames = () => {
+    const sql = `SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee`;
+    return db.promise().query(sql)
+        .then(([rows, fields]) => {
+            const employeeNames = rows.map(row => {
+                return row.name;
+            });
+            return employeeNames;
+        });
+};
+
+const getEmployeeId = (employeeName) => {
+    const sql = `SELECT employee.id FROM employee
+                WHERE CONCAT(employee.first_name, ' ', employee.last_name) = ?`;
+    const params = [employeeName];
+    return db.promise().query(sql, params)
+        .then( ([rows, fields]) => {
+            return rows[0].id;
+        });
+};
+
+const updateEmployeeRole = (updateRoleData) => {
+    return getEmployeeId(updateRoleData.employeeName)
+        .then(employeeId => {
+            return getRoleId(updateRoleData.newRole)
+            .then(newRoleId => {
+                const sql = `UPDATE employee SET role_id = ? WHERE id = ?`;
+                const params = [newRoleId, employeeId];
+
+                return db.promise().query(sql, params)
+                    .then(([rows, fields]) => {
+                        console.log("Updated " + updateRoleData.employeeName + "'s role to " + updateRoleData.newRole);
+                    });
+            });
+        });
+};
+
+module.exports = { getDepartments, getRoles, getEmployees, addDepartment, addRole, addEmployee, getEmployeeNames, updateEmployeeRole };
