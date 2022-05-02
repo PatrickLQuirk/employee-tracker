@@ -68,7 +68,6 @@ const getDepartmentId = (departmentName) => {
     
     return db.promise().query(sql, params)
         .then( ([rows, fields]) => {
-            // add error handling for no department with that name
             const departmentId = rows[0].id;
             return departmentId;
         });
@@ -95,7 +94,6 @@ const getRoleId = (roleTitle) => {
 
     return db.promise().query(sql, params)
         .then( ([rows, fields]) => {
-            // add error handling for no role with that name
             const roleId = rows[0].id;
             return roleId;
         })
@@ -108,7 +106,6 @@ const getManagerId = (managerName) => {
 
     return db.promise().query(sql, params)
         .then( ([rows, fields]) => {
-            // add error handling for no manager with that name?
             const managerId = rows[0].id;
             return managerId;
         })

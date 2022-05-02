@@ -2,8 +2,6 @@ const inquirer = require('inquirer');
 const db = require('./db/connection');
 const cTable = require('console.table');
 
-// later change the way we require the queries
-// const { getDepartments } = require('./queries/department-queries');
 const queries = require('./utils/queries');
 
 db.connect(err => {
@@ -11,7 +9,6 @@ db.connect(err => {
 });
 
 const promptMainMenu = () => {
-    // eventually need to add more options
     const mainMenuQuestions = [{
         type: 'list',
         name: 'mainMenu',
@@ -19,7 +16,7 @@ const promptMainMenu = () => {
         choices: ['View Departments', 'View Roles', 'View Employees', 
         'Add Department', 'Add Role', 'Add Employee', 
         'Update Employee Role', 'Exit Application']
-    }]
+    }];
 
     return inquirer.prompt(mainMenuQuestions)
         .then(mainMenuData => {
