@@ -4,6 +4,8 @@
 ## Description
 This is a command-line application for managing a database for your employees. The database will contain tables for the various departments, roles, and employees for your business. From the command-line you can view and add departments, roles, and employees, as well as update an employee's role.
 
+![Code](employee-tracker.png)
+
 ## Table of Contents
 
 - [Installation](#installation)
